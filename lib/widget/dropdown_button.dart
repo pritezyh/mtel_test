@@ -10,6 +10,7 @@ class DropdownButtonMtel extends StatefulWidget {
 }
 
 class _DropdownButtonMtelState extends State<DropdownButtonMtel> {
+  //selectedItem is null for show hint text
   late String selectedItem;
   @override
   Widget build(BuildContext context) {
@@ -24,13 +25,19 @@ class _DropdownButtonMtelState extends State<DropdownButtonMtel> {
           border: InputBorder.none,
           hintText: UiString.dropdownHint,
         ),
+        //use dropdown constant for create deopdown menu item
         items: DropdownConst.dropdownItems
-            .map((item) => DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item),
-                ))
+            .map(
+                //Convert value in dropdown constant to map and create new dropdown menuitem
+                (item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(item),
+                    ))
+            //then convert to list again
             .toList(),
+
         onChanged: (item) => setState(
+          //then user selected item set new item
           () {
             selectedItem = item.toString();
           },

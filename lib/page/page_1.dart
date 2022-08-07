@@ -19,6 +19,7 @@ class _Page1State extends State<Page1> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            //Children is all widget in this page
             children: [
               const SizedBox(height: 10),
               const CarouselSlide(),
@@ -33,10 +34,13 @@ class _Page1State extends State<Page1> {
 
   Widget buildRows(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 50),
-      height: 500,
+      margin: const EdgeInsets.only(bottom: 50),
+      //fix this size for show all listview context
+      height: 1600,
       width: double.infinity,
       child: ListView.builder(
+          //use NeverScroolable cause this scene is singlechildscrollview for scroll
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: 100,
           itemBuilder: (context, index) {
             return Center(

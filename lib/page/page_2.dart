@@ -10,8 +10,11 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
+  // formkey use for vilidate textformfield
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // use datetime for show current date in date picker
   DateTime dateTime = DateTime.now();
+  // set selectedDate to false cause show Selected Date on button
   bool selectedDate = false;
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,6 @@ class _Page2State extends State<Page2> {
         title: const Text('MTel Page 2'),
       ),
       body: Form(
-        autovalidateMode: AutovalidateMode.always,
         key: _formKey,
         child: SafeArea(
           child: SingleChildScrollView(
@@ -29,6 +31,8 @@ class _Page2State extends State<Page2> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  //This is all widget in second page
+                  //Show image from carousel by Image.network
                   Image.network(widget.imageUrl),
                   _buildTextFormfiled(),
                   _buildDatepicker(),
@@ -45,29 +49,41 @@ class _Page2State extends State<Page2> {
   Widget _buildTextFormfiled() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
-      height: 50,
+      height: 100,
       width: double.infinity,
       child: TextFormField(
         maxLength: 13,
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(
-          errorStyle: TextStyle(color: Colors.red),
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(width: 3, color: Colors.blue),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          errorBorder: OutlineInputBorder(
+            //when validate return false color border will change from blue to red
+            borderSide: const BorderSide(width: 3, color: Colors.red),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          errorStyle: const TextStyle(color: Colors.red),
           counterText: UiString.nullString,
           hintText: UiString.idCardHint,
-          prefixIcon: Icon(Icons.person),
+          prefixIcon: const Icon(Icons.person),
         ),
         validator: (value) {
+          //when user tap on succes button on keyboard application will validate value
           if (value!.isEmpty || value.length < 13) {
-            return 'Not correct';
+            //if value is empty or value length is less than 13 will return false and show error message
+            return 'Please enter number';
           } else {
             return null;
           }
         },
-        onSaved: ((newValue) {
-          if (!_formKey.currentState!.validate()) {
+        onEditingComplete: () {
+          //this function use on user tap on succes button in keyboard will call this function for validate
+          if (_formKey.currentState!.validate()) {
             return;
           }
-        }),
+        },
       ),
     );
   }
@@ -81,8 +97,10 @@ class _Page2State extends State<Page2> {
           firstDate: DateTime(2000),
           lastDate: DateTime(2030),
         );
+        //line 98 when user no selecte or tap cancel button in datepicker  date will pop and retuen nothing
         if (newDate == null) return;
         setState(() {
+          //then user selected date set new value on selectedDate to true and set new dateTime value
           selectedDate = true;
           dateTime = newDate;
         });
